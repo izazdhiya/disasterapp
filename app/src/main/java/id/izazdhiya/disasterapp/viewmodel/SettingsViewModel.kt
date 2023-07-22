@@ -1,23 +1,23 @@
 package id.izazdhiya.disasterapp.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import id.izazdhiya.disasterapp.datastore.SettingsDataStore
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SettingsViewModel (application: Application) : ViewModel() {
+class SettingsViewModel(private val pref: SettingsDataStore) : ViewModel() {
 
-    private val dataStore = SettingsDataStore(application)
+    fun getTheme() = pref.getThemeSetting().asLiveData()
 
-    val getTheme = dataStore.getTheme().asLiveData(Dispatchers.IO)
-
-    fun setTheme(isDarkMode : Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStore.setTheme(isDarkMode)
+    fun saveTheme(isDark: Boolean) {
+        viewModelScope.launch {
+            pref.saveThemeSetting(isDark)
         }
     }
 
+    class Factory(private val pref: SettingsDataStore) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = SettingsViewModel(pref) as T
+    }
 }

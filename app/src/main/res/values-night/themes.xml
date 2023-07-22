@@ -16,13 +16,9 @@
     </style>
 
     <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
-        <!-- Customize the color of the text -->
         <item name="android:textColor">@android:color/white</item>
-
-        <!-- Remove the search icon -->
-        <item name="searchIcon">@android:color/transparent</item>
-
-        <!-- Remove the underline -->
+        <item name="searchIcon">@null</item>
         <item name="queryBackground">@android:color/transparent</item>
     </style>
+
 </resources>
