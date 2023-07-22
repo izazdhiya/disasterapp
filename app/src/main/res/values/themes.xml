@@ -1,8 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.DisasterApp" parent="Theme.Material3.DayNight.NoActionBar">
+<!--    <style name="Base.Theme.DisasterApp" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your light theme here. &ndash;&gt;-->
+<!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
+<!--    </style>-->
+
+    <style name="Base.Theme.DisasterApp" parent="Theme.AppCompat.Light">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="AppTheme.TransparentStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+    </style>
+
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
+        <!-- Customize the color of the text -->
+        <item name="android:textColor">@android:color/black</item>
+
+        <!-- Remove the search icon -->
+        <item name="searchIcon">@android:color/transparent</item>
+
+        <!-- Remove the underline -->
+        <item name="queryBackground">@android:color/transparent</item>
     </style>
 
     <style name="Theme.DisasterApp" parent="Base.Theme.DisasterApp" />
