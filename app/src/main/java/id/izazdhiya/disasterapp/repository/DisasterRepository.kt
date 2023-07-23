@@ -1,7 +1,6 @@
 package id.izazdhiya.disasterapp.repository
 
 import id.izazdhiya.disasterapp.service.ApiService
-import java.sql.Time
 
 class DisasterRepository(private val apiService: ApiService) {
     suspend fun getReports(geoFormat: String) = apiService.getReports(geoFormat)

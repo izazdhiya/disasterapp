@@ -11,11 +11,11 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_elips"
-            android:layout_width="75dp"
-            android:layout_height="5dp"
+            android:layout_width="30dp"
+            android:layout_height="3dp"
             app:cardCornerRadius="50dp"
             android:backgroundTint="#C9C7CB"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
@@ -34,6 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Informasi Bencana Terkini"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -49,6 +52,15 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_disaster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

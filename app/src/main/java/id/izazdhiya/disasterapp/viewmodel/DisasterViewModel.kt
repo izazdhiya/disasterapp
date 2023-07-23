@@ -1,12 +1,13 @@
 package id.izazdhiya.disasterapp.viewmodel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import id.izazdhiya.disasterapp.model.network.Resource
 import id.izazdhiya.disasterapp.repository.DisasterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlin.Exception
 
-class DisasterViewModel(private val repository: DisasterRepository) {
+class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(){
 
     fun getReports() = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))

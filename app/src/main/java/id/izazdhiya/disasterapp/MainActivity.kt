@@ -2,18 +2,20 @@ package id.izazdhiya.disasterapp
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
 import android.view.WindowManager.LayoutParams.*
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,17 +24,33 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import id.izazdhiya.disasterapp.adapter.DisasterAdapter
 import id.izazdhiya.disasterapp.databinding.ActivityMainBinding
+import id.izazdhiya.disasterapp.databinding.BottomSheetBinding
 import id.izazdhiya.disasterapp.datastore.SettingsDataStore
+import id.izazdhiya.disasterapp.model.network.Status
+import id.izazdhiya.disasterapp.repository.DisasterRepository
+import id.izazdhiya.disasterapp.repository.viewModelsFactory
+import id.izazdhiya.disasterapp.service.ApiClient
+import id.izazdhiya.disasterapp.service.ApiService
+import id.izazdhiya.disasterapp.viewmodel.DisasterViewModel
 import id.izazdhiya.disasterapp.viewmodel.MainViewModel
 
 
 internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var bottomSheetBinding: BottomSheetBinding
     private val viewModel by viewModels<MainViewModel> {
         MainViewModel.Factory(SettingsDataStore(this))
     }
+
+    private lateinit var disasterAdapter: DisasterAdapter
+    private val apiService: ApiService by lazy { ApiClient.instance }
+
+    private val disasterRepository: DisasterRepository by lazy { DisasterRepository(apiService) }
+    private val disasterViewModel: DisasterViewModel by viewModelsFactory { DisasterViewModel(disasterRepository) }
 
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -63,6 +81,8 @@ internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
+
+//        observeBottomSheet()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -96,14 +116,27 @@ internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         private const val REQUEST_LOCATION_PERMISSION = 1
     }
 
-//    private fun setTranslucentStatusBar() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
-//            window.statusBarColor = Color.TRANSPARENT
-//        }
-//    }
+    private fun observeBottomSheet() {
+    bottomSheetBinding = BottomSheetBinding.inflate(layoutInflater)
+    val dialog = BottomSheetDialog(this)
+    dialog.setContentView(bottomSheetBinding.root)
+    dialog.show()
+        disasterViewModel.getReports().observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    disasterAdapter.updateData(it.data)
+                    bottomSheetBinding.pbDisaster.isVisible = false
+                }
+                Status.ERROR -> {
+                    Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.LOADING -> {
+                    bottomSheetBinding.pbDisaster.isVisible = true
+                }
+            }
+        }
+
+    }
 }
 
 

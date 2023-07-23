@@ -48,14 +48,4 @@ class SettingsActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
-    private fun isDarkModeEnabled(): Boolean {
-        val currentNightMode = AppCompatDelegate.getDefaultNightMode()
-        return currentNightMode == AppCompatDelegate.MODE_NIGHT_YES
-    }
-
-    private fun setDarkMode(nightMode: Int) {
-        AppCompatDelegate.setDefaultNightMode(nightMode)
-    }
-
 }
