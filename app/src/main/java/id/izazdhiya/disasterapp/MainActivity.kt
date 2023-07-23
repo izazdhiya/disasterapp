@@ -1,19 +1,21 @@
 package id.izazdhiya.disasterapp
 
 
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
+import android.view.View
+import android.view.WindowManager.LayoutParams.*
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import id.izazdhiya.disasterapp.databinding.ActivityMainBinding
 import id.izazdhiya.disasterapp.datastore.SettingsDataStore
 import id.izazdhiya.disasterapp.viewmodel.MainViewModel
+
 
 internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -36,6 +39,8 @@ internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.setFlags(FLAG_LAYOUT_NO_LIMITS, FLAG_LAYOUT_NO_LIMITS)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -90,6 +95,15 @@ internal class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 1
     }
+
+//    private fun setTranslucentStatusBar() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+//            window.statusBarColor = Color.TRANSPARENT
+//        }
+//    }
 }
 
 
