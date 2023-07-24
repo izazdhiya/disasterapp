@@ -10,7 +10,7 @@ import id.izazdhiya.disasterapp.databinding.ItemBencanaBinding
 import id.izazdhiya.disasterapp.model.network.response.Feature
 import id.izazdhiya.disasterapp.model.network.response.Result
 
-class DisasterAdapter(private val onClickListener: (pkey: Int, disaster: Feature) -> Unit) :
+class DisasterAdapter() :
     RecyclerView.Adapter<DisasterAdapter.DisasterViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<Feature>() {
@@ -54,10 +54,6 @@ class DisasterAdapter(private val onClickListener: (pkey: Int, disaster: Feature
                 Glide.with(itemView.context)
                     .load(item.properties.imageUrl)
                     .into(ivImage)
-//                tvMovieRating.text = item.voteAverage.toString()
-//                itemMovie.setOnClickListener {
-//                    onClickListener.invoke(item.id, item)
-//                }
 
             }
         }

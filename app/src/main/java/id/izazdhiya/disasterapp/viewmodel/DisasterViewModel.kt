@@ -1,10 +1,15 @@
 package id.izazdhiya.disasterapp.viewmodel
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import id.izazdhiya.disasterapp.model.network.Resource
 import id.izazdhiya.disasterapp.repository.DisasterRepository
 import kotlinx.coroutines.Dispatchers
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.util.concurrent.TimeUnit
 import kotlin.Exception
 
 class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(){
@@ -36,10 +41,12 @@ class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(
         }
     }
 
-    fun getArchive(start: String, end: String) = liveData(Dispatchers.IO) {
+    fun getArchive(startTime: String, endTime: String) = liveData(Dispatchers.IO) {
+        val encodedStartTime = URLEncoder.encode(startTime, StandardCharsets.UTF_8.toString())
+        val encodedEndTime = URLEncoder.encode(endTime, StandardCharsets.UTF_8.toString())
         emit(Resource.loading(null))
         try {
-            emit(Resource.success(repository.getArchive("geojson", start, end)))
+            emit(Resource.success(repository.getArchive("geojson", encodedStartTime, encodedEndTime)))
         } catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
         }

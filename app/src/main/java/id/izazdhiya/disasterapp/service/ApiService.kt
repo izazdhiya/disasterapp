@@ -9,33 +9,33 @@ interface ApiService {
 
     @GET("reports")
     suspend fun getReports(
-        @Query("geoformat") geoformat: String = "geojson"
-    ): Result
+        @Query("geoformat") geoFormat: String
+    ): DisasterReport
 
     @GET("reports")
     suspend fun getReportsByProvince(
-        @Query("geoformat") geoformat: String = "geojson",
+        @Query("geoformat") geoFormat: String,
         @Query("admin") provinceId: String
-    ): Result
+    ): DisasterReport
 
     @GET("reports")
     suspend fun getReportsByDisaster(
-        @Query("geoformat") geoformat: String = "geojson",
+        @Query("geoformat") geoFormat: String,
         @Query("disaster") disasterType: String
-    ): Result
+    ): DisasterReport
 
     @GET("reports/archive")
     suspend fun getArchive(
-        @Query("geoformat") geoformat: String = "geojson",
+        @Query("geoformat") geoFormat: String,
         @Query("start") startDate: String,
         @Query("end") endDate: String,
-    ): Result
+    ): DisasterReport
 
     @GET("reports/archive")
     suspend fun getArchiveByProvince(
-        @Query("geoformat") geoformat: String = "geojson",
+        @Query("geoformat") geoFormat: String,
         @Query("start") startDate: String,
         @Query("end") endDate: String,
         @Query("admin") provinceId: String
-    ): Result
+    ): DisasterReport
 }

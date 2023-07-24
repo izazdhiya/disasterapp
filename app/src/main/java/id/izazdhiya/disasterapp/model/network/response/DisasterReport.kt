@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class DisasterReport(
     @SerializedName("result")
-    val result: Result,
+    val result: Result?,
     @SerializedName("statusCode")
     val statusCode: Int
 )
