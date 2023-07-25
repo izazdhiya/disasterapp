@@ -1,5 +1,7 @@
 package id.izazdhiya.disasterapp.adapter
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -8,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import id.izazdhiya.disasterapp.databinding.ItemBencanaBinding
 import id.izazdhiya.disasterapp.model.network.response.Feature
-import id.izazdhiya.disasterapp.model.network.response.Result
 
-class DisasterAdapter() :
-    RecyclerView.Adapter<DisasterAdapter.DisasterViewHolder>() {
+class DisasterAdapter : RecyclerView.Adapter<DisasterAdapter.DisasterViewHolder>() {
 
     private val diffCallback = object : DiffUtil.ItemCallback<Feature>() {
         override fun areItemsTheSame(
@@ -31,7 +31,7 @@ class DisasterAdapter() :
 
     private val listDiffer = AsyncListDiffer(this, diffCallback)
 
-    fun updateData(disaster: Result?) = listDiffer.submitList(disaster?.features)
+    fun updateData(disaster: List<Feature>?) = listDiffer.submitList(disaster)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DisasterViewHolder {
         val binding = ItemBencanaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -54,7 +54,6 @@ class DisasterAdapter() :
                 Glide.with(itemView.context)
                     .load(item.properties.imageUrl)
                     .into(ivImage)
-
             }
         }
     }
