@@ -5,12 +5,8 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import id.izazdhiya.disasterapp.adapter.DisasterTypeAdapter
 import id.izazdhiya.disasterapp.databinding.ActivitySettingsBinding
 import id.izazdhiya.disasterapp.datastore.SettingsDataStore
-import id.izazdhiya.disasterapp.model.DisasterType
 import id.izazdhiya.disasterapp.viewmodel.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
@@ -33,8 +29,10 @@ class SettingsActivity : AppCompatActivity() {
         viewModel.getTheme().observe(this) {
             if (it) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                binding.deskripsiMode.text = "Disable dark mode"
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                binding.deskripsiMode.text = "Enable dark mode"
             }
             binding.switchMode.isChecked = it
         }

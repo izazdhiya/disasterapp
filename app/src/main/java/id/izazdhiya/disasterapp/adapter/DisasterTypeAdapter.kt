@@ -1,12 +1,10 @@
 package id.izazdhiya.disasterapp.adapter
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.parser.ColorParser
 import id.izazdhiya.disasterapp.R
 import id.izazdhiya.disasterapp.databinding.ItemTypeBinding
 import id.izazdhiya.disasterapp.model.DisasterType
@@ -14,10 +12,23 @@ import id.izazdhiya.disasterapp.model.DisasterType
 class DisasterTypeAdapter(
     private val disasterType: ArrayList<DisasterType>,
     private val onClickListener: (id: String, type: DisasterType) -> Unit) : RecyclerView.Adapter<DisasterTypeAdapter.DisasterTypeViewHolder>() {
+    private var selectedPosition = RecyclerView.NO_POSITION
 
-    private var selectedPosition = RecyclerView.NO_POSITION // Awalnya, tidak ada item yang dipilih
+    init {
+        val allPosition = findPositionByType("all")
+        if (allPosition != RecyclerView.NO_POSITION) {
+            selectedPosition = allPosition
+        }
+    }
+    private fun findPositionByType(id: String): Int {
+        for ((index, item) in disasterType.withIndex()) {
+            if (item.id == id) {
+                return index
+            }
+        }
+        return RecyclerView.NO_POSITION
+    }
 
-    // Fungsi untuk mengubah item yang dipilih
     fun setSelectedPosition(position: Int) {
         selectedPosition = position
         notifyDataSetChanged()

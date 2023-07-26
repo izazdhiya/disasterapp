@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mapsFragment">
+
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="id.izazdhiya.disasterapp.fragment.MapsFragment"
+        android:label="Fragment_Search"
+        tools:layout="@layout/fragment_maps">
+        <action
+            android:id="@+id/action_mapsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="id.izazdhiya.disasterapp.fragment.SearchFragment"
+        android:label="Fragment_Search"
+        tools:layout="@layout/fragment_search">
+
+<!--        <argument-->
+<!--            android:name="area"-->
+<!--            app:argType="string"-->
+<!--            app:nullable="true" />-->
+<!--        <argument-->
+<!--            android:name="startDate"-->
+<!--            app:argType="string"-->
+<!--            app:nullable="true" />-->
+<!--        <argument-->
+<!--            android:name="endDate"-->
+<!--            app:argType="string"-->
+<!--            app:nullable="true" />-->
+
+        <action
+            android:id="@+id/action_searchFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:popUpTo="@id/searchFragment"
+            app:popUpToInclusive="true">
+        </action>
+    </fragment>
+
+
+</navigation>
