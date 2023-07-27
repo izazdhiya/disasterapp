@@ -61,4 +61,13 @@ class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(
         }
     }
 
+    fun getFloods() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(null))
+        try {
+            emit(Resource.success(repository.getFloods("topojson", "ID-JK", 3)))
+        } catch (e: Exception) {
+            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+        }
+    }
+
 }

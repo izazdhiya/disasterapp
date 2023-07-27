@@ -2,6 +2,7 @@ package id.izazdhiya.disasterapp.service
 
 import id.izazdhiya.disasterapp.model.network.response.DisasterReport
 import id.izazdhiya.disasterapp.model.network.response.Result
+import id.izazdhiya.disasterapp.model.network.response.flood.Flood
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -38,4 +39,11 @@ interface ApiService {
         @Query("end", encoded = true) endDate: String,
         @Query("admin") provinceId: String
     ): DisasterReport
+
+    @GET("floods")
+    suspend fun getFloods(
+        @Query("geoformat") geoFormat: String,
+        @Query("admin") provinceId: String,
+        @Query("minimum_state") state: Int
+    ) : Flood
 }

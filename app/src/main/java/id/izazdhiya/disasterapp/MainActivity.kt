@@ -1,34 +1,28 @@
 package id.izazdhiya.disasterapp
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager.LayoutParams.*
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import id.izazdhiya.disasterapp.adapter.DisasterAdapter
-import id.izazdhiya.disasterapp.adapter.DisasterTypeAdapter
 import id.izazdhiya.disasterapp.databinding.ActivityMainBinding
 import id.izazdhiya.disasterapp.datastore.SettingsDataStore
-import id.izazdhiya.disasterapp.fragment.SearchFragment
-import id.izazdhiya.disasterapp.model.DisasterType
-import id.izazdhiya.disasterapp.model.network.Resource
 import id.izazdhiya.disasterapp.model.network.Status
-import id.izazdhiya.disasterapp.model.network.response.DisasterReport
 import id.izazdhiya.disasterapp.repository.DisasterRepository
 import id.izazdhiya.disasterapp.repository.viewModelsFactory
 import id.izazdhiya.disasterapp.service.ApiClient
@@ -39,31 +33,24 @@ import id.izazdhiya.disasterapp.viewmodel.MainViewModel
 
 internal class MainActivity : AppCompatActivity(){
 
-    val searchFragment : Fragment = SearchFragment()
-    val fragmentManager : FragmentManager = supportFragmentManager
-
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel by viewModels<MainViewModel> {
-        MainViewModel.Factory(SettingsDataStore(this))
-    }
-
-    private lateinit var disasterTypeAdapter: DisasterTypeAdapter
-    private lateinit var disasterTypeList: ArrayList<DisasterType>
-
-    private lateinit var disasterAdapter: DisasterAdapter
     private val apiService: ApiService by lazy { ApiClient.instance }
 
     private val disasterRepository: DisasterRepository by lazy { DisasterRepository(apiService) }
     private val disasterViewModel: DisasterViewModel by viewModelsFactory { DisasterViewModel(disasterRepository) }
 
-    private lateinit var mMap: GoogleMap
+    private val channelId = "disaster"
+    private val notificationId = 1
+
+    private val viewModel by viewModels<MainViewModel> {
+        MainViewModel.Factory(SettingsDataStore(this))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         window.setFlags(FLAG_TRANSLUCENT_STATUS, FLAG_TRANSLUCENT_STATUS)
-//        window.addFlags(FLAG_LAYOUT_NO_LIMITS)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -76,133 +63,78 @@ internal class MainActivity : AppCompatActivity(){
             }
         }
 
-//        val sheet = findViewById<FrameLayout>(R.id.sheet)
-//        BottomSheetBehavior.from(sheet).apply {
-//            peekHeight = 100
-//            this.state = BottomSheetBehavior.STATE_COLLAPSED
-//        }
-
-//        createDisasterType()
-
-//        val mapFragment = supportFragmentManager
-//            .findFragmentById(R.id.map) as SupportMapFragment
-//        mapFragment.getMapAsync(this)
-
-//        binding.buttonSetting.setOnClickListener {
-//            val intent = Intent(this, SettingsActivity::class.java)
-//            startActivity(intent)
-//        }
+        observeNotification()
 
     }
 
-//    override fun onMapReady(googleMap: GoogleMap) {
-//        mMap = googleMap
-//        observeReports()
-//    }
+    companion object {
+        private const val REQUEST_POST_NOTIFICATIONS = 1
+    }
 
-//    private fun createDisasterType() {
-//
-//        disasterTypeList = ArrayList<DisasterType>().apply {
-//            addAll(
-//                listOf(
-//                    DisasterType("all", "All"),
-//                    DisasterType("flood", "Flood"),
-//                    DisasterType("earthquake", "Earthquake"),
-//                    DisasterType("fire", "Fire"),
-//                    DisasterType("haze", "Haze"),
-//                    DisasterType("wind", "Wind"),
-//                    DisasterType("volcano", "Volcano")
-//                )
-//            )
-//        }
-//
-//        disasterTypeAdapter = DisasterTypeAdapter(disasterTypeList) { id: String, _ ->
-//            binding.map.isVisible = false
-//            binding.lottieNodata.isVisible = false
-//            binding.lottieSearchlocation.isVisible = true
-//            mMap.clear()
-//            if (id == "all") {
-//                observeReports()
-//            } else {
-//                observeReportsByDisaster(id)
-//            }
-//        }
-//
-//        binding.rvDisasterType.apply {
-//            adapter = disasterTypeAdapter
-//            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.HORIZONTAL, false)
-//        }
-//    }
-//
-//    private fun statusObserve(it: Resource<DisasterReport>){
-//        when (it.status) {
-//            Status.SUCCESS -> {
-//                binding.pbDisaster.isVisible = false
-//                binding.lottieSearchlocation.isVisible = false
-//                setData(it)
-//            }
-//            Status.ERROR -> {
-//                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
-//                binding.pbDisaster.isVisible = false
-//                binding.lottieNodata.isVisible = true
-//                binding.lottieSearchlocation.isVisible = false
-//            }
-//            Status.LOADING -> {
-//                binding.pbDisaster.isVisible = true
-//            }
-//        }
-//    }
-//
-//    private fun setData(it: Resource<DisasterReport>){
-//        if (it.data?.statusCode == 200) {
-//            val disaster = it.data.result?.features
-//            if (!disaster.isNullOrEmpty()) {
-//                binding.rvDisasterType.isVisible = true
-//                binding.map.isVisible = true
-//
-//                for (element in disaster) {
-//                    val latLng = LatLng(element.geometry.coordinates[1], element.geometry.coordinates[0])
-//                    mMap.addMarker(MarkerOptions().position(latLng).title(element.properties.disasterType))
-//                }
-//
-//                val firstElement = disaster[0]
-//                val latLng = LatLng(firstElement.geometry.coordinates[1], firstElement.geometry.coordinates[0])
-//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f))
-//
-//                binding.tvInfo.text = "Informasi Bencana Terkini"
-//
-//                disasterAdapter.updateData(disaster)
-//
-//                initRecyclerView()
-//
-//            } else {
-//                Toast.makeText(this, "Tidak ada data", Toast.LENGTH_SHORT).show()
-//                binding.lottieNodata.isVisible = true
-//            }
-//        } else {
-//            Toast.makeText(this, "Bad Request", Toast.LENGTH_SHORT).show()
-//            binding.lottieNodata.isVisible = true
-//        }
-//    }
-//
-//    private fun observeReports() {
-//        disasterViewModel.getReports().observe(this) {
-//            statusObserve(it)
-//        }
-//    }
-//
-//    private fun observeReportsByDisaster(disasterType: String) {
-//        disasterViewModel.getReportsByDisaster(disasterType).observe(this) {
-//            statusObserve(it)
-//        }
-//    }
-//
-//    private fun initRecyclerView() {
-//        binding.rvItemBencana.apply {
-//            adapter = disasterAdapter
-//            layoutManager = LinearLayoutManager(this@MainActivity)
-//        }
-//    }
+    private fun createNotificationChannel() {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val builder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Waspada area banjir")
+            .setContentText("Tinggi banjir antara 71 hingga 150 cm")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            with(NotificationManagerCompat.from(this@MainActivity)) {
+                notify(notificationId, builder.build())
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(
+                        Manifest.permission.POST_NOTIFICATIONS,
+                    ),
+                    REQUEST_POST_NOTIFICATIONS
+                )
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.app_name)
+            val descriptionText = getString(R.string.app_name)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun observeNotification() {
+        disasterViewModel.getFloods().observe(this) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    if (it.data?.statusCode == 200) {
+                        val flood = it.data.result.objects.output.geometries
+                        if (flood.isNotEmpty()) {
+                            createNotificationChannel()
+                        }
+                    }
+                }
+                Status.ERROR -> {
+                }
+                Status.LOADING -> {
+                }
+            }
+        }
+    }
 }
 
 
