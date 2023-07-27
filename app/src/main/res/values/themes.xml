@@ -5,12 +5,13 @@
 <!--        &lt;!&ndash; <item name="colorPrimary">@color/my_light_primary</item> &ndash;&gt;-->
 <!--    </style>-->
 
-    <style name="Base.Theme.DisasterApp" parent="Theme.Material3.Light">
+    <style name="Base.Theme.DisasterApp" parent="Theme.AppCompat.Light">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
     <style name="AppTheme.TransparentStatusBar" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">#3B8628</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="android:windowTranslucentNavigation">false</item>

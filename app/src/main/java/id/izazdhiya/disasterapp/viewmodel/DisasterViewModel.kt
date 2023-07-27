@@ -17,7 +17,7 @@ class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(
     fun getReports() = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
         try {
-            emit(Resource.success(repository.getReports("geojson")))
+            emit(Resource.success(repository.getReports("geojson", 604800)))
         } catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
         }
@@ -26,7 +26,7 @@ class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(
     fun getReportsByProvince(provinceId: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
         try {
-            emit(Resource.success(repository.getReportsByProvince("geojson", provinceId)))
+            emit(Resource.success(repository.getReportsByProvince("geojson", provinceId, 604800)))
         } catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
         }
@@ -35,7 +35,7 @@ class DisasterViewModel(private val repository: DisasterRepository) : ViewModel(
     fun getReportsByDisaster(disaster: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
         try {
-            emit(Resource.success(repository.getReportsByDisaster("geojson", disaster)))
+            emit(Resource.success(repository.getReportsByDisaster("geojson", disaster, 604800)))
         } catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
         }

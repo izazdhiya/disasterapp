@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -51,6 +52,8 @@ class MapsFragment : Fragment() {
 
     private val disasterRepository: DisasterRepository by lazy { DisasterRepository(apiService) }
     private val disasterViewModel: DisasterViewModel by viewModelsFactory { DisasterViewModel(disasterRepository) }
+
+    private lateinit var maps: GoogleMap
 
     private val callback = OnMapReadyCallback { googleMap ->
         Log.d(TAG, "MAPS: ADA")
@@ -148,10 +151,12 @@ class MapsFragment : Fragment() {
                 binding.lottieNodata.isVisible = true
                 binding.lottieSearchlocation.isVisible = false
                 binding.clSheet.isVisible = false
+//                refreshLayout()
             }
             Status.LOADING -> {
                 binding.pbDisaster.isVisible = true
                 binding.clSheet.isVisible = false
+//                refreshLayout()
             }
         }
     }
@@ -189,12 +194,14 @@ class MapsFragment : Fragment() {
                 binding.lottieNodata.isVisible = true
                 binding.tvNodata.isVisible = true
                 binding.clSheet.isVisible = false
+//                refreshLayout()
             }
         } else {
             Toast.makeText(requireContext(), "Bad Request", Toast.LENGTH_SHORT).show()
             binding.lottieNodata.isVisible = true
             binding.tvNodata.isVisible = true
             binding.clSheet.isVisible = false
+//            refreshLayout()
         }
     }
 
@@ -252,6 +259,7 @@ class MapsFragment : Fragment() {
                     bottomSheetBehavior.isHideable = true
                     binding.searchBar.isVisible = false
                     binding.rvDisasterType.isVisible = false
+
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.isFitToContents = true
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -267,4 +275,16 @@ class MapsFragment : Fragment() {
             }
         })
     }
+
+//    private fun refreshLayout() {
+//        val view =
+//            LayoutInflater.from(requireContext()).inflate(R.layout.fragment_maps, null)
+//        val swipe: SwipeRefreshLayout = view.findViewById(R.id.refresh_layout)
+//
+//        swipe.setOnRefreshListener {
+//            observeReports(maps)
+//            swipe.isRefreshing = false
+//        }
+//
+//    }
 }
