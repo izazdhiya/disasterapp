@@ -27,15 +27,15 @@ interface ApiService {
     @GET("reports/archive")
     suspend fun getArchive(
         @Query("geoformat") geoFormat: String,
-        @Query("start") startDate: String,
-        @Query("end") endDate: String,
+        @Query("start", encoded = true) startDate: String,
+        @Query("end", encoded = true) endDate: String,
     ): DisasterReport
 
     @GET("reports/archive")
     suspend fun getArchiveByProvince(
         @Query("geoformat") geoFormat: String,
-        @Query("start") startDate: String,
-        @Query("end") endDate: String,
+        @Query("start", encoded = true) startDate: String,
+        @Query("end", encoded = true) endDate: String,
         @Query("admin") provinceId: String
     ): DisasterReport
 }

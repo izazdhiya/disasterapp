@@ -57,9 +57,10 @@ class MapsFragment : Fragment() {
             observeReportsByProvince(area!!, googleMap)
             arguments?.remove("area")
         } else if (!startDate.isNullOrBlank() && !endDate.isNullOrBlank()) {
+            Log.d(TAG, "startDate: $startDate, endDate : $endDate")
             observeArchive(startDate!!, endDate!!, googleMap)
-            arguments?.remove("start")
-            arguments?.remove("end")
+            arguments?.remove("startDate")
+            arguments?.remove("endDate")
         } else {
             observeReports(googleMap)
         }
@@ -178,9 +179,11 @@ class MapsFragment : Fragment() {
                 binding.pbDisaster.isVisible = false
                 binding.lottieNodata.isVisible = true
                 binding.lottieSearchlocation.isVisible = false
+                binding.clSheet.isVisible = false
             }
             Status.LOADING -> {
                 binding.pbDisaster.isVisible = true
+                binding.clSheet.isVisible = false
             }
         }
     }
@@ -190,8 +193,9 @@ class MapsFragment : Fragment() {
             val disaster = it.data.result?.features
             if (!disaster.isNullOrEmpty()) {
                 binding.rvDisasterType.isVisible = true
-                binding.sheet.isVisible = true
+                binding.clSheet.isVisible = true
                 binding.map.isVisible = true
+                binding.tvNodata.isVisible = false
 
                 for (element in disaster) {
                     val latLng = LatLng(element.geometry.coordinates[1], element.geometry.coordinates[0])
@@ -202,10 +206,6 @@ class MapsFragment : Fragment() {
                 val latLng = LatLng(firstElement.geometry.coordinates[1], firstElement.geometry.coordinates[0])
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f))
 
-                binding.tvInfo.text = "Informasi Bencana Terkini"
-
-                initBottomSheet()
-
 //                disasterAdapter.updateData(disaster)
 
                 disasterAdapter = DisasterAdapter(disaster)
@@ -214,15 +214,19 @@ class MapsFragment : Fragment() {
                     layoutManager = LinearLayoutManager(requireContext())
                 }
 
+                initBottomSheet()
+
             } else {
                 Toast.makeText(requireContext(), "Tidak ada data", Toast.LENGTH_SHORT).show()
                 binding.lottieNodata.isVisible = true
                 binding.tvNodata.isVisible = true
+                binding.clSheet.isVisible = false
             }
         } else {
             Toast.makeText(requireContext(), "Bad Request", Toast.LENGTH_SHORT).show()
             binding.lottieNodata.isVisible = true
             binding.tvNodata.isVisible = true
+            binding.clSheet.isVisible = false
         }
     }
 
@@ -282,15 +286,19 @@ class MapsFragment : Fragment() {
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    bottomSheetBehavior.isFitToContents = false
+                    bottomSheetBehavior.isFitToContents = true
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     bottomSheetBehavior.peekHeight = 100
-                    bottomSheetBehavior.isHideable = false
+                    bottomSheetBehavior.isHideable = true
+                    binding.searchBar.isVisible = false
+                    binding.rvDisasterType.isVisible = false
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
                     bottomSheetBehavior.isFitToContents = true
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     bottomSheetBehavior.peekHeight = 100
                     bottomSheetBehavior.isHideable = false
+                    binding.searchBar.isVisible = true
+                    binding.rvDisasterType.isVisible = true
                 }
             }
 

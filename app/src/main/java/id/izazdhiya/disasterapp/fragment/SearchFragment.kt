@@ -126,9 +126,6 @@ class SearchFragment : Fragment() {
     private fun searchByDate() {
         binding.etStartDate.setOnClickListener { showStartDatePickerDialog() }
         binding.etEndDate.setOnClickListener { showEndDatePickerDialog() }
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-        startDate = dateFormat.format(startDateCalendar.time)
-        endDate = dateFormat.format(endDateCalendar.time)
         binding.btnSubmit.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("startDate", startDate)
@@ -167,12 +164,13 @@ class SearchFragment : Fragment() {
                 endDateCalendar.set(Calendar.YEAR, year)
                 endDateCalendar.set(Calendar.MONTH, month)
                 endDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                updateEndDate()
 
                 endDateCalendar.set(Calendar.HOUR_OF_DAY, 0)
                 endDateCalendar.set(Calendar.MINUTE, 0)
                 endDateCalendar.set(Calendar.SECOND, 0)
                 endDateCalendar.set(Calendar.MILLISECOND, 0)
+
+                updateEndDate()
             },
             endDateCalendar.get(Calendar.YEAR),
             endDateCalendar.get(Calendar.MONTH),
@@ -183,12 +181,18 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateStartDate() {
+        val encodeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        startDate = encodeFormat.format(startDateCalendar.time)
+
         val dateFormat = "dd-MM-yyyy"
         val formattedDate = SimpleDateFormat(dateFormat, Locale.getDefault()).format(startDateCalendar.time)
         binding.etStartDate.setText(formattedDate)
     }
 
     private fun updateEndDate() {
+        val encodeFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        endDate = encodeFormat.format(endDateCalendar.time)
+
         val dateFormat = "dd-MM-yyyy"
         val formattedDate = SimpleDateFormat(dateFormat, Locale.getDefault()).format(endDateCalendar.time)
         binding.etEndDate.setText(formattedDate)

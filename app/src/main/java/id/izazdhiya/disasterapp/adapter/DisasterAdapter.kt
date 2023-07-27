@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import id.izazdhiya.disasterapp.R
 import id.izazdhiya.disasterapp.databinding.ItemBencanaBinding
 import id.izazdhiya.disasterapp.model.DisasterArea
 import id.izazdhiya.disasterapp.model.network.response.Feature
@@ -52,11 +53,15 @@ class DisasterAdapter(private val disaster: List<Feature>) : RecyclerView.Adapte
 
         fun bind(item: Feature) {
             binding.apply {
-                tvTitle.text = item.properties.title.toString()
-                tvDeskripsi.text = item.properties.text
-                Glide.with(itemView.context)
-                    .load(item.properties.imageUrl)
-                    .into(ivImage)
+                tvTitle.text = item.properties.disasterType
+//                tvDeskripsi.text = item.properties.text ?: "No Title Available"
+                if (item.properties.imageUrl.isNullOrEmpty()){
+                    ivImage.setImageResource(R.drawable.noimage)
+                }else{
+                    Glide.with(itemView.context)
+                        .load(item.properties.imageUrl)
+                        .into(ivImage)
+                }
             }
         }
     }
