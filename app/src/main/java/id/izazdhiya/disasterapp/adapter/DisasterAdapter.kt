@@ -65,7 +65,9 @@ class DisasterAdapter(private val disaster: List<Feature>) : RecyclerView.Adapte
                 tvStatus.text = item.properties.status
 //                tvDeskripsi.text = item.properties.text ?: "No Title Available"
                 if (item.properties.imageUrl.isNullOrEmpty()){
-                    ivImage.setImageResource(R.drawable.noimage)
+                    Glide.with(itemView.context)
+                        .load("https://ibb.co/4J6S7yS")
+                        .into(ivImage)
                 }else{
                     Glide.with(itemView.context)
                         .load(item.properties.imageUrl)
