@@ -21,19 +21,6 @@
         android:label="Fragment_Search"
         tools:layout="@layout/fragment_search">
 
-<!--        <argument-->
-<!--            android:name="area"-->
-<!--            app:argType="string"-->
-<!--            app:nullable="true" />-->
-<!--        <argument-->
-<!--            android:name="startDate"-->
-<!--            app:argType="string"-->
-<!--            app:nullable="true" />-->
-<!--        <argument-->
-<!--            android:name="endDate"-->
-<!--            app:argType="string"-->
-<!--            app:nullable="true" />-->
-
         <action
             android:id="@+id/action_searchFragment_to_mapsFragment"
             app:destination="@id/mapsFragment"

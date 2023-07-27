@@ -53,6 +53,7 @@ class MapsFragment : Fragment() {
     private val disasterViewModel: DisasterViewModel by viewModelsFactory { DisasterViewModel(disasterRepository) }
 
     private val callback = OnMapReadyCallback { googleMap ->
+        Log.d(TAG, "MAPS: ADA")
         if (!area.isNullOrBlank()) {
             observeReportsByProvince(area!!, googleMap)
             arguments?.remove("area")
@@ -95,39 +96,6 @@ class MapsFragment : Fragment() {
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-
-//        val sheet = view.findViewById<FrameLayout>(R.id.sheet)
-//        BottomSheetBehavior.from(sheet).apply {
-//            peekHeight = 100
-//            state = BottomSheetBehavior.STATE_COLLAPSED
-//        }
-
-//        val sheet = view.findViewById<FrameLayout>(R.id.sheet)
-//        val bottomSheetBehavior = BottomSheetBehavior.from(sheet)
-//
-//        val halfScreenHeight = resources.displayMetrics.heightPixels / 2
-//        bottomSheetBehavior.peekHeight = halfScreenHeight
-//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//
-//        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-//                    bottomSheetBehavior.isFitToContents = false
-//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-//                    bottomSheetBehavior.peekHeight = 100
-//                    bottomSheetBehavior.isHideable = false
-//                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-//                    bottomSheetBehavior.isFitToContents = true
-//                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//                    bottomSheetBehavior.peekHeight = 100
-//                    bottomSheetBehavior.isHideable = false
-//                }
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                // Handle the sliding behavior (optional)
-//            }
-//        })
 
         moveToSettings()
         moveToSearch()
@@ -251,14 +219,6 @@ class MapsFragment : Fragment() {
     private fun observeArchive(startDate: String, endDate: String, map: GoogleMap) {
         disasterViewModel.getArchive(startDate, endDate).observe(viewLifecycleOwner) {
             statusObserve(it, map)
-        }
-    }
-
-
-    private fun initRecyclerView() {
-        binding.rvItemBencana.apply {
-            adapter = disasterAdapter
-            layoutManager = LinearLayoutManager(requireContext())
         }
     }
 

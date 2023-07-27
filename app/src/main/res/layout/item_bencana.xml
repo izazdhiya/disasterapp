@@ -51,19 +51,48 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Banjir Bandang"
+                    android:textStyle="bold"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/tv_Deskripsi"/>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tv_Deskripsi"
+                    android:id="@+id/tv_Status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Confirmed"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tv_Title"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_Title"/>
+
+                <TextView
+                    android:id="@+id/tv_Location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dadahafaj ahfjaf afjafha afhjafhaj afajfajf afhjafaj ajfgajfja jajafgja ajfajgfja ajfjafja ajfajf"
+                    android:text="Location: "
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/tv_Title"
-                    app:layout_constraintTop_toBottomOf="@id/tv_Title" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_Title"/>
+
+                <TextView
+                    android:id="@+id/tv_Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date: "
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_Title"
+                    app:layout_constraintTop_toBottomOf="@id/tv_Location" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_Coordinate"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Coordinate: "-->
+<!--                    android:textSize="14sp"-->
+<!--                    app:layout_constraintStart_toStartOf="@id/tv_Title"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/tv_Date" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
