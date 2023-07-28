@@ -126,7 +126,6 @@ internal class MainActivity : AppCompatActivity(){
                         if (flood.isNotEmpty()) {
                             createNotificationChannel()
                         }
-                        createNotificationChannel()
                     }
                 }
                 Status.ERROR -> {
