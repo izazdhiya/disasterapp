@@ -16,4 +16,4 @@ API: https://docs.petabencana.id/routes/pemantauan-tma
 <img width="728" alt="Screen Shot 2023-07-08 at 1 09 24" src="https://github.com/GG-3-0-Mobile-Engineering/mobile-engineering/assets/22597869/04e8bf30-d912-488e-8a7c-268e818eee76">
 
 ### APK Release
-[Disaster App](https://drive.google.com/drive/folders/1YwPmBN68ew-pKFMgjqMkny4uVCHbNhKQ?usp=sharing)
+[Disaster App](https://drive.google.com/file/d/10C0GUNrXhbaJ_pzYaI2Qvq4lUAfTstup/view?usp=sharing)
