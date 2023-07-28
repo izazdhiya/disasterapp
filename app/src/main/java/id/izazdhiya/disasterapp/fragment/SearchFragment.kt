@@ -2,14 +2,18 @@ package id.izazdhiya.disasterapp.fragment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import id.izazdhiya.disasterapp.R
 import id.izazdhiya.disasterapp.adapter.DisasterAreaAdapter
 import id.izazdhiya.disasterapp.databinding.FragmentSearchBinding
@@ -21,6 +25,8 @@ import java.util.Locale
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var editText: TextInputEditText
 
     private lateinit var disasterAreaAdapter: DisasterAreaAdapter
     private lateinit var disasterAreaList: ArrayList<DisasterArea>
@@ -51,7 +57,19 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.svSearchArea.requestFocus()
+        binding.etSearch.addTextChangedListener(object : TextWatcher{
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val inputText = s.toString()
+                disasterAreaAdapter.filter(inputText)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                createDisasterArea()
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
 
         moveToMaps()
         createDisasterArea()
@@ -113,7 +131,6 @@ class SearchFragment : Fragment() {
             bundle.putString("area", id)
 
             view?.findNavController()?.navigate(R.id.action_searchFragment_to_mapsFragment, bundle)
-//            view?.findNavController()?.popBackStack()
 
         }
 
